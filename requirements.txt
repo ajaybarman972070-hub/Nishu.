@@ -3,3 +3,4 @@ fastapi
 httpx
 pydantic_settings
 sqlalchemy
+passlib
