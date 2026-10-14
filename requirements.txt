@@ -4,3 +4,4 @@ httpx
 pydantic_settings
 sqlalchemy
 passlib
+python_jose
