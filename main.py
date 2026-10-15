@@ -609,6 +609,7 @@ def auto_answer(
 # ============================================================
 #  NOTES ENDPOINTS
 @app.get(/"dashboard") 
+
 return templates.TemplateResponse(request,"dashboard.html")
 @app.get("/login")
 async def login(request: Request):
