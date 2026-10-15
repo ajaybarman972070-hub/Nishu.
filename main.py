@@ -18,7 +18,7 @@ Single-file production-ready SaaS backend with:
   - Credit balance & pay-per-minute system (Razorpay/Stripe webhook)
 
 Deploy on Render:  uvicorn backend.main:app --host 0.0.0.0 --port $PORT
-"""
+
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
