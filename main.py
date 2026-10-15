@@ -586,7 +586,7 @@ def auto_answer(
     scripts = [
         {"phone": s.phone, "greeting": s.greeting}
         for s in db.query(CustomScriptModel).
-     filter(CustomScriptModel.user_id
+     filter(CustomScriptModel).user_id
      from fastapi import FastAPI, HTTPException, Depends, WebSocket, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
