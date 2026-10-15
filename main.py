@@ -18,6 +18,10 @@ Single-file production-ready SaaS backend with:
 
 Deploy on Render:  uvicorn backend.main:app --host 0.0.0.0 --port $PORT
 """
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles # अगर CSS/JS या इमेज फोल्डर (static) भी है
 
 from __future__ import annotations
 
@@ -64,7 +68,18 @@ from jose import jwt, JWTError
 # ============================================================
 #  CONFIGURATION
 # ============================================================
+app = FastAPI()
 
+# मान लो तुम्हारी एचटीएमएल फाइलें 'templates' नाम के फोल्डर में हैं
+templates = Jinja2Templates(directory="templates")
+
+# अगर कोई CSS, JS या इमेज का 'static' फोल्डर है तो यह लाइन भी जोड़ देना
+# app.mount("/static", StaticFiles(directory="static"), name="static")
+@app.get("/login", response_class=HTMLResponse)
+async def login_page(request: Request):
+    # यह templates.TemplateResponse तुम्हारे 'login.html' को पकड़कर यूजर के सामने ले आएगा
+    return templates.TemplateResponse("login.html", {"request": request})
+  
 class Settings(BaseSettings):
     database_url: str = "sqlite:///./kinjal_ai.db"
     jwt_secret: str = "change-this-to-a-long-random-secret-key"
@@ -75,7 +90,7 @@ class Settings(BaseSettings):
     twilio_phone_number: str = ""
     elevenlabs_api_key: str = ""
     admin_passcode: str = "Neetu Katariya And Son Nishkarsh"
-    cors_origins: str = "*"
+    cors_origins: str = "*'
 
     class Config:
         env_file = ".env"
