@@ -583,7 +583,8 @@ def auto_answer(
         {"passcode": p.passcode}
         for p in db.query(SecretPasscodeModel).filter(SecretPasscodeModel.user_id == user.id).all()
     ]
-    scripts =[phone": s.phone, greeting": s.greeting]
+    scripts =[
+      {"phone": s.phone, "greeting": s.greeting}
         {"phone": s.phone, "greeting": s.greeting}
         for s in db.query(CustomScriptModel).
      filter(CustomScriptModel).user_id
