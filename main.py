@@ -73,7 +73,7 @@ app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
 # अगर कोई CSS, JS या इमेज का 'static' फोल्डर है तो यह लाइन भी जोड़ देना
- app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 @app.get("/", response_class=HTMLResponse)
 async def login_page(request: Request):
     यह templates.TemplateResponse तुम्हारे 'login.html' को पकड़कर यूजर के सामने ले आएगा
