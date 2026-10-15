@@ -69,11 +69,11 @@ from jose import jwt, JWTError
 #  CONFIGURATION
 # ============================================================
 app = FastAPI()
-मान लो तुम्हारी एचटीएमएल फाइलें 'templates' नाम के फोल्डर में हैं
+# मान लो तुम्हारी एचटीएमएल फाइलें 'templates' नाम के फोल्डर में हैं
 templates = Jinja2Templates(directory="templates")
 
 # अगर कोई CSS, JS या इमेज का 'static' फोल्डर है तो यह लाइन भी जोड़ देना
-# app.mount("/static", StaticFiles(directory="static"), name="static")
+ app.mount("/static", StaticFiles(directory="static"), name="static")
 @app.get("/", response_class=HTMLResponse)
 async def login_page(request: Request):
     यह templates.TemplateResponse तुम्हारे 'login.html' को पकड़कर यूजर के सामने ले आएगा
@@ -608,3 +608,112 @@ def auto_answer(
 
 # ============================================================
 #  NOTES ENDPOINTS
+/dashboard 
+return templates.template response(request,"dashboard.html)
+@app.get("/login")
+async def login(request: Request):
+return templates.TemplateResponse(request, "login.html")
+@app.get("/notes")
+async def notes(request: Request):return templates.TemplateResponse(request, "notes.html")
+@app.get("/call-history")
+async def call_history(request: Request):
+return templates.TemplateResponse(request, "call_history.html")
+@app.get("/owner-settings")
+async def owner_settings(request: Request):
+return templates.TemplateResponse(request, "owner_settings.html")
+@app.post("/set-chat-password")
+async def set_chat_password(request: Request, password: str = Form(...)):
+# पासवर्ड सेव करने का लॉजिक यहाँ आएगा 
+return {"message": "Password updated successfully"}
+@app.get("/logout")
+async def logout(request: Request):
+# लॉगआउट लॉजिक यहाँ (जैसे सेशन क्लियर करना)
+return RedirectResponse(url="/login")
+@app.post("/upload-knowledge-base")
+async def upload_knowledge_base(file: UploadFile = File(...)):
+    # फाइल को सेव या प्रोसेस करने का लॉजिक यहाँ आएगा
+    return {"message": "File uploaded successfully"}
+@app.get("/trusted-contacts")
+async def trusted_contacts(request: Request):
+    return templates.TemplateResponse(request, "trusted_contacts.html")
+@app.get("/custom-scripts")
+async def custom_scripts(request: Request):
+    return templates.TemplateResponse(request, "custom_scripts.html")
+@app.get("/secret-passcodes")
+async def secret_passcodes(request: Request):
+    return templates.TemplateResponse(request, "secret_passcodes.html")
+@app.get("/security-alerts")
+async def security_alerts(request: Request):
+    return templates.TemplateResponse(request, "security_alerts.html")
+
+@app.get("/ai-persona-settings")
+async def ai_persona_settings(request: Request):
+    return templates.TemplateResponse(request, "ai_persona_settings.html")
+@app.get("/device-sessions")
+async def device_sessions(request: Request):
+    return templates.TemplateResponse(request, "device_sessions.html")
+@app.get("/credit-management")
+async def credit_management(request: Request):
+    return templates.TemplateResponse(request, "credit_management.html")
+@app.get("/api-keys")
+async def api_keys(request: Request):
+    return templates.TemplateResponse(request, "api_keys.html")
+@app.websocket("/ws-call")
+async def websocket_call(websocket: WebSocket):
+    await websocket.accept()
+    # लाइव-कॉल हैंडलिंग लॉजिक यहाँ आएगा
+@app.get("/system-logs")
+async def system_logs(request: Request):
+    return templates.TemplateResponse(request, "system_logs.html")
+
+@app.get("/system-settings")
+async def system_settings(request: Request):
+    return templates.TemplateResponse(request, "system_settings.html")
+@app.get("/export-call-history")
+async def export_call_history(request: Request):
+    # कॉल हिस्ट्री एक्सपोर्ट करने का लॉजिक यहाँ आएगा
+    return {"message": "Call history exported successfully"}
+@app.get("/export-knowledge-base")
+async def export_knowledge_base(request: Request):
+    # नॉलेज बेस डेटा एक्सपोर्ट करने का लॉजिक यहाँ आएगा
+    return {"message": "Knowledge base exported successfully"}
+@app.post("/clear-chat-history")
+async def clear_chat_history(request: Request):
+    # चैट हिस्ट्री क्लियर करने का लॉजिक यहाँ आएगा
+    return {"message": "Chat history cleared successfully"}
+@app.post("/generate-business-note")
+async def generate_business_note(request: Request):
+    # बिज़नेस नोट जनरेट करने का लॉजिक यहाँ आएगा
+    return {"message": "Business note generated successfully"}
+@app.get("/subscription-plan")
+async def subscription_plan(request: Request):
+    return templates.TemplateResponse(request, "subscription_plan.html")
+@app.get("/contact-support")
+async def contact_support(request: Request):
+    return templates.TemplateResponse(request, "contact_support.html")
+@app.get("/user-roles")
+async def user_roles(request: Request):
+    return templates.TemplateResponse(request, "user_roles.html")
+@app.get("/audit-trails")
+async def audit_trails(request: Request):
+    return templates.TemplateResponse(request, "audit_trails.html")
+@app.get("/billing-invoices")
+async def billing_invoices(request: Request):
+    return templates.TemplateResponse(request, "billing_invoices.html")
+@app.post("/call-status-webhook")
+async def call_status_webhook(request: Request):
+    # कॉल स्टेटस अपडेट हैंडल करने का लॉजिक यहाँ आएगा
+    return {"message": "Call status updated successfully"}
+@app.post("/send-notification")
+async def send_notification(request: Request):
+    # नोटिफिकेशन भेजने का लॉजिक यहाँ आएगा
+    return {"message": "Notification sent successfully"}
+@app.get("/backup-restore")
+async def backup_restore(request: Request):
+    return templates.TemplateResponse(request, "backup_restore.html")
+@app.post("/configure-custom-script")
+async def configure_custom_script(request: Request):
+    # कस्टम स्क्रिप्ट कॉन्फ़िगर करने का लॉजिक यहाँ आएगा
+    return {"message": "Custom script configured successfully"}
+
+  
