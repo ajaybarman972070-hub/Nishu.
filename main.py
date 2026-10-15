@@ -1,4 +1,4 @@
-from __future__ import annotations
+nifrom __future__ import annotations
 
 # Kinjal-AI Ultra Enterprise - FastAPI Backend
 # Single-file production-ready SaaS backend with:
@@ -609,7 +609,7 @@ def auto_answer(
 # ============================================================
 #  NOTES ENDPOINTS
 /dashboard 
-return templates.TemplateResponse(request,"dashboard.html)
+return templates.TemplateResponse(request,"dashboard.html")
 @app.get("/login")
 async def login(request: Request):
 return templates.TemplateResponse(request, "login.html")
