@@ -16,14 +16,14 @@ from __future__ import annotations
   # WebSocket live-call takeover (/ws/live-call)
   # Credit balance & pay-per-minute system (Razorpay/Stripe webhook)
 
-Deploy on Render:  uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+# Deploy on Render:  uvicorn backend.main:app --host 0.0.0.0 --port $PORT
 
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles # अगर CSS/JS या इमेज फोल्डर (static) भी है
 
-from __future__ import annotations
+
 
 import os
 import re
