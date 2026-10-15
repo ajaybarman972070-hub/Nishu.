@@ -1,21 +1,20 @@
 from __future__ import annotations
 
 # Kinjal-AI Ultra Enterprise - FastAPI Backend
-=============================================
-Single-file production-ready SaaS backend with:
-  - Multi-user JWT authentication (/auth/register, /auth/login)
-  - SQLAlchemy PostgreSQL persistence (survives restarts)
-  - Twilio TwiML voice webhook (/voice/incoming)
-  - ElevenLabs TTS integration (/api/tts)
-  - Multi-language auto-detection (Hindi / Hinglish / English)
-  - Call routing engine (normal_ring / immediate_transfer / assistant_reply)
-  - Trusted contacts, custom scripts, secret passcodes
-  - Business notes with live search
-  - Call history & logs with sentiment coloring
-  - Owner admin panel (block/unblock, session revoke)
-  - Knowledge base upload (PDF/Text) (/upload-kb)
-  - WebSocket live-call takeover (/ws/live-call)
-  - Credit balance & pay-per-minute system (Razorpay/Stripe webhook)
+# Single-file production-ready SaaS backend with:
+  # Multi-user JWT authentication (/auth/register, /auth/login)
+  # SQLAlchemy PostgreSQL persistence (survives restarts)
+  # Twilio TwiML voice webhook (/voice/incoming)
+  # ElevenLabs TTS integration (/api/tts)
+  # Multi-language auto-detection (Hindi / Hinglish / English)
+  # Call routing engine (normal_ring / immediate_transfer / assistant_reply)
+  # Trusted contacts, custom scripts, secret passcodes
+  # Business notes with live search
+  # Call history & logs with sentiment coloring
+  # Owner admin panel (block/unblock, session revoke)
+  # Knowledge base upload (PDF/Text) (/upload-kb)
+  # WebSocket live-call takeover (/ws/live-call)
+  # Credit balance & pay-per-minute system (Razorpay/Stripe webhook)
 
 Deploy on Render:  uvicorn backend.main:app --host 0.0.0.0 --port $PORT
 
