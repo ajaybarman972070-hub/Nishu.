@@ -583,11 +583,7 @@ def auto_answer(
         {"passcode": p.passcode}
         for p in db.query(SecretPasscodeModel).filter(SecretPasscodeModel.user_id == user.id).all()
     ]
-    scripts =[
-      {"phone": s.phone, "greeting": s.greeting}
-        {"phone": s.phone, "greeting": s.greeting}
-        for s in db.query(CustomScriptModel).
-     filter(CustomScriptModel).user_id
+  scripts = {"phone": s.phone, "greeting": s.greeting}for s db.query(customscriptmodoelel
      from fastapi import FastAPI, HTTPException, Depends, WebSocket, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
