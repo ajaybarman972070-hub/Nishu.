@@ -90,7 +90,7 @@ class Settings(BaseSettings):
     twilio_phone_number: str = ""
     elevenlabs_api_key: str = ""
     admin_passcode: str = "Neetu Katariya And Son Nishkarsh"(
-    cors_origins: str = "*
+    cors_origins: str = "*"
 
     class Config:
         env_file = ".env"
