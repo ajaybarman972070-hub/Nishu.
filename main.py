@@ -76,7 +76,7 @@ templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 @app.get("/", response_class=HTMLResponse)
 async def login_page(request: Request):
-    यह templates.TemplateResponse तुम्हारे 'login.html' को पकड़कर यूजर के सामने ले आएगा
+   # यह templates.TemplateResponse तुम्हारे 'login.html' को पकड़कर यूजर के सामने ले आएगा
     return templates.TemplateResponse("login.html", {"request": request})
   
 class Settings(BaseSettings):
