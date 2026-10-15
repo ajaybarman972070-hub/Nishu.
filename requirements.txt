@@ -6,3 +6,4 @@ sqlalchemy
 passlib
 python_jose
 pydantic[email]
+Jinja2
