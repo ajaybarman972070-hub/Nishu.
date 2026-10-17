@@ -583,8 +583,4 @@ def auto_answer(
         {"passcode": p.passcode}
         for p in db.query(SecretPasscodeModel).filter(SecretPasscodeModel.user_id == user.id).all()
     ]
-  scripts = {"phone": s.phone, "greeting": s.greeting}for s db.query(customscriptmodoelel)
-
-
-
-     from fastapi import FastAPI, HTTPException, D
+  scripts = [{"phone": s.phone, "greeting": s.greeting } for s in db.query(customscriptmodel).all()
