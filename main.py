@@ -582,4 +582,4 @@ def auto_answer(
     passcodes = [
         {"passcode": p.passcode}
         for p in db.query(SecretPasscodeModel).filter(SecretPasscodeModel.user_id == user.id).all() 
-    scripts = [{"phone": s.phone, "greeting": s.greeting } for s in db.query(customscriptmodel).all()
+    scripts = [{"phone": s.phone, "greeting": s.greeting } for s in db.query(Customerscriptmodel).all()
