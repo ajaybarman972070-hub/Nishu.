@@ -1,29 +1,9 @@
 from __future__ import annotations
 
-# Kinjal-AI Ultra Enterprise - FastAPI Backend
-# Single-file production-ready SaaS backend with:
-  # Multi-user JWT authentication (/auth/register, /auth/login)
-  # SQLAlchemy PostgreSQL persistence (survives restarts)
-  # Twilio TwiML voice webhook (/voice/incoming)
-  # ElevenLabs TTS integration (/api/tts)
-  # Multi-language auto-detection (Hindi / Hinglish / English)
-  # Call routing engine (normal_ring / immediate_transfer / assistant_reply)
-  # Trusted contacts, custom scripts, secret passcodes
-  # Business notes with live search
-  # Call history & logs with sentiment coloring
-  # Owner admin panel (block/unblock, session revoke)
-  # Knowledge base upload (PDF/Text) (/upload-kb)
-  # WebSocket live-call takeover (/ws/live-call)
-  # Credit balance & pay-per-minute system (Razorpay/Stripe webhook)
-
-# Deploy on Render:  uvicorn backend.main:app --host 0.0.0.0 --port $PORT
-
-from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
-from fastapi.staticfiles import StaticFiles # अगर CSS/JS या इमेज फोल्डर (static) भी है
-
-
+# ============================================================
+#  Kinjal-AI Ultra Enterprise - FastAPI Backend
+#  Single-file production-ready SaaS backend
+# ============================================================
 
 import os
 import re
@@ -47,6 +27,8 @@ from fastapi import (
 )
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import PlainTextResponse, HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel, EmailStr, Field
 from pydantic_settings import BaseSettings
 from sqlalchemy import (
@@ -66,19 +48,22 @@ from passlib.context import CryptContext
 from jose import jwt, JWTError
 
 # ============================================================
-#  CONFIGURATION
+#  CONFIGURATION & SETUP
 # ============================================================
-app = FastAPI()
-# मान लो तुम्हारी एचटीएमएल फाइलें 'templates' नाम के फोल्डर में हैं
-templates = Jinja2Templates(directory="templates")
 
-# अगर कोई CSS, JS या इमेज का 'static' फोल्डर है तो यह लाइन भी जोड़ देना
+app = FastAPI(
+    title="Kinjal-AI Ultra Enterprise API",
+    version="4.0.0",
+    description="Auto-Answer AI Receptionist — Twilio, ElevenLabs, JWT Auth, Credit System, Knowledge Base",
+)
+
+templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
 @app.get("/", response_class=HTMLResponse)
 async def login_page(request: Request):
-   # यह templates.TemplateResponse तुम्हारे 'login.html' को पकड़कर यूजर के सामने ले आएगा
     return templates.TemplateResponse("login.html", {"request": request})
-  
+
 class Settings(BaseSettings):
     database_url: str = "sqlite:///./kinjal_ai.db"
     jwt_secret: str = "change-this-to-a-long-random-secret-key"
@@ -314,7 +299,7 @@ class TTSRequest(BaseModel):
     voice_id: str = "21m00Tcm4TlvDq8ikWAM"
 
 # ============================================================
-#  ENGINE LOGIC
+#  ENGINE LOGIC & HELPERS
 # ============================================================
 
 VOICE_PERSONAS = [
@@ -490,25 +475,6 @@ def require_admin(user: UserModel = Depends(get_current_user)) -> UserModel:
     return user
 
 # ============================================================
-#  FASTAPI APP
-# ============================================================
-
-app = FastAPI(
-    title="Kinjal-AI Ultra Enterprise API",
-    version="4.0.0",
-    description="Auto-Answer AI Receptionist — Twilio, ElevenLabs, JWT Auth, Credit System, Knowledge Base",
-)
-
-origins = settings.cors_origins.split(",") if settings.cors_origins != "*" else ["*"]
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# ============================================================
 #  AUTH ENDPOINTS
 # ============================================================
 
@@ -581,5 +547,36 @@ def auto_answer(
     ]
     passcodes = [
         {"passcode": p.passcode}
-        for p in db.query(SecretPasscodeModel).filter(SecretPasscodeModel.user_id == user.id).all() 
-    scripts = [{"phone": s.phone, "greeting": s.greeting } for s in db.query(Customerscriptmodel).all()
+        for p in db.query(SecretPasscodeModel).filter(SecretPasscodeModel.user_id == user.id).all()
+    ]
+    scripts = [
+        {"phone": s.phone, "greeting": s.greeting}
+        for s in db.query(CustomScriptModel).filter(CustomScriptModel.user_id == user.id).all()
+    ]
+
+    custom_greeting = get_custom_script(req.phone, scripts)
+    route = determine_route(req.phone, req.message, req.emergency_code, contacts, passcodes)
+
+    result = generate_auto_answer(
+        message=req.message,
+        persona_id=req.persona_id,
+        emergency_code=req.emergency_code,
+        route=route,
+        custom_greeting=custom_greeting,
+    )
+
+    # Save to call logs
+    log_entry = CallLogModel(
+        user_id=user.id,
+        phone=req.phone,
+        message=req.message,
+        sentiment=result["sentiment"],
+        persona=result["persona"]["name"],
+        route=result["route"],
+        duration_seconds=15,
+    )
+    db.add(log_entry)
+    db.commit()
+
+    return AutoAnswerResponse(**result)
+                              
