@@ -572,11 +572,4 @@ def auto_answer(
         message=req.message,
         sentiment=result["sentiment"],
         persona=result["persona"]["name"],
-        route=result["route"],
-        duration_seconds=15,
-    )
-    db.add(log_entry)
-    db.commit()
-
-    return AutoAnswerResponse(**result)
-                              
+    
