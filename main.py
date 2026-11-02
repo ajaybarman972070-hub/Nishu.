@@ -566,11 +566,11 @@ def auto_answer(
     )
 
     # Save to call logs
-    log_entry = CallLogModel()
+    log_entry = CallLogModel(
         user_id=user.id,
         phone=req.phone,
         message=req.message,
         sentiment=result["sentiment"],
         persona=result["persona"]["name"],
 
-    
+)
